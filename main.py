@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 # Для начала определим настройки запуска
-hostName = "https://github.com/c098vm/" # Адрес для доступа по сети
+hostName = "github.com/c098vm/homework_19.1/HTML/index.html" # Адрес для доступа по сети
 serverPort = 8080 # Порт для доступа по сети
 
 class MyServer(BaseHTTPRequestHandler):
