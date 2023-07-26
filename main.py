@@ -26,11 +26,7 @@ class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
         """ Метод для обработки входящих GET-запросов """
 
-        query_components = parse_qs(urlparse(self.path).query)
-        print(query_components)
-        page_address = query_components.get('page')
-        page_content = self.__get_index()
-
+        page_content = self.__get_index()  # Получение содержимого файла HTML/index.html
         self.send_response(200)  # Отправка кода ответа
         self.send_header("Content-type", "text/html")  # Отправка типа данных, который будет передаваться
         self.end_headers()  # Завершение формирования заголовков ответа
