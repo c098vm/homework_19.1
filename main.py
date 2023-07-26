@@ -1,20 +1,41 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlparse, parse_qs
 
 # Для начала определим настройки запуска
-hostName = "github.com/c098vm/homework_19.1/HTML/index.html" # Адрес для доступа по сети
-serverPort = 8080 # Порт для доступа по сети
+hostName = "127.0.0.1"  # Адрес для доступа по сети
+serverPort = 8080  # Порт для доступа по сети
+
 
 class MyServer(BaseHTTPRequestHandler):
     """
         Специальный класс, который отвечает за
         обработку входящих запросов от клиентов
     """
+
+    def __get_index(self):
+        path = "HTML/index.html"
+
+        try:
+            with open(path, "r", encoding="utf-8") as file:
+                html_content = file.read()
+                return html_content
+        except Exception as error:
+            print(f"Ошибка {error}")
+            return None
+
     def do_GET(self):
         """ Метод для обработки входящих GET-запросов """
-        self.send_response(200) # Отправка кода ответа
-        self.send_header("Content-type", "text/html") # Отправка типа данных, который будет передаваться
-        self.end_headers() # Завершение формирования заголовков ответа
-        self.wfile.write(bytes("utf-8")) # Тело ответа
+
+        query_components = parse_qs(urlparse(self.path).query)
+        print(query_components)
+        page_address = query_components.get('page')
+        page_content = self.__get_index()
+
+        self.send_response(200)  # Отправка кода ответа
+        self.send_header("Content-type", "text/html")  # Отправка типа данных, который будет передаваться
+        self.end_headers()  # Завершение формирования заголовков ответа
+        self.wfile.write(bytes(page_content, "utf-8"))  # Тело ответа
+
 
 if __name__ == "__main__":
     # Инициализация веб-сервера, который будет по заданным параметрам в сети
